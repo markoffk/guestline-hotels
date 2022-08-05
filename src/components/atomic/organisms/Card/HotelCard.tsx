@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack } from '../Layout/Stack';
 import { Hotel, HotelRoomRates } from '../../../../lib/guestline/types/api';
@@ -17,11 +17,20 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
       (value.occupancy.maxOverall === undefined || value.occupancy.maxOverall >= desiredAdults + desiredChildren)
     );
   });
+
+  const [imageIndex, setImageIndex] = useState(0);
+
   return (
     <Root>
       <Stack flexDirection="column" gap={24}>
         <Stack gap={8}>
-          <div>image</div>
+          <Stack>
+            <button disabled={imageIndex <= 0} onClick={(_) => setImageIndex(imageIndex - 1)}>
+              &lt;
+            </button>
+            {hotel.images[imageIndex] && <HotelImage src={hotel.images[imageIndex].url} alt={`Image ${imageIndex}`} />}
+            <button disabled={imageIndex >= hotel.images.length - 1} onClick={(_) => setImageIndex(imageIndex + 1)}>&gt;</button>
+          </Stack>
           <Stack flexDirection="column" gap={8} flex={1}>
             <span>{hotel.name}</span>
             <span>{hotel.address1}</span>
@@ -54,4 +63,8 @@ const Root = styled.div`
   max-width: 600px;
   border: 1px dotted burlywood;
   padding: 24px;
+`;
+
+const HotelImage = styled.img`
+  max-width: 100px;
 `;
