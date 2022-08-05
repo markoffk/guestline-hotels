@@ -35,7 +35,7 @@ export type HotelRoomRates = {
     occupancy: {
       maxAdults: number;
       maxChildren: number;
-      maxOverall: number;
+      maxOverall?: number;
     };
     disabledAccess: boolean;
     bedConfiguration: string;

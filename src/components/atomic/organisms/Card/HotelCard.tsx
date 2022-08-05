@@ -14,7 +14,7 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
     return (
       value.occupancy.maxAdults >= desiredAdults &&
       value.occupancy.maxChildren >= desiredChildren &&
-      value.occupancy.maxOverall >= desiredAdults + desiredChildren
+      (value.occupancy.maxOverall === undefined || value.occupancy.maxOverall >= desiredAdults + desiredChildren)
     );
   });
   return (
@@ -52,4 +52,6 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
 const Root = styled.div`
   width: 100%;
   max-width: 600px;
+  border: 1px dotted burlywood;
+  padding: 24px;
 `;
