@@ -26,6 +26,45 @@ export type Hotel = {
   };
 };
 
+export type HotelRoomRates = {
+  rooms: {
+    id: string;
+    name: string;
+    shortDescription: string;
+    longDescription: string;
+    occupancy: {
+      maxAdults: number;
+      maxChildren: number;
+      maxOverall: number;
+    };
+    disabledAccess: boolean;
+    bedConfiguration: string;
+    images: {
+      url: string;
+      alt: string;
+    }[];
+    facilities: {
+      code: string;
+      name: string;
+    }[];
+  }[];
+  ratePlans: {
+    id: string;
+    shortDescription: string;
+    longDescription?: string;
+    prePayment: string;
+    cancellationPolicy?: {
+      name: string;
+      text: string;
+      penalty: string;
+      applicable: string;
+      hour: string;
+    };
+    prePaymentValue?: number;
+    prePaymentIsPercentage?: boolean;
+  }[];
+};
+
 export type GuestlineApi = {
   '/hotels': {
     get: {
@@ -48,10 +87,7 @@ export type GuestlineApi = {
         };
       };
       res: {
-        body: {
-          rooms: any[];
-          ratePlans: any[];
-        };
+        body: HotelRoomRates;
       };
     };
   };

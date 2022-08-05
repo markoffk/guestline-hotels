@@ -7,9 +7,31 @@ import { Filter, FilterBar } from '../../components/atomic/organisms/FilterBar/F
 
 export const HotelsView = () => {
   const api = useGuestlineApi();
-  const hotelsQuery = useQuery(['/hotels'], () => api['/hotels'].get({ queryParams: { 'collection-id': 'OBMNG' } }), {
-    initialData: [],
-  });
+  const hotelsQuery = useQuery(
+    ['/hotels'],
+    async () => {
+      const hotels = await api['/hotels'].get({ queryParams: { 'collection-id': 'OBMNG' } });
+
+      return (
+        await Promise.all(
+          hotels.map((hotel) =>
+            Promise.all([
+              hotel,
+              api['/roomRates/:collectionId/:hotelId'].get({
+                params: {
+                  collectionId: 'OBMNG',
+                  hotelId: hotel.id,
+                },
+              }),
+            ])
+          )
+        )
+      ).flatMap(([hotel, roomRates]) => ({ ...hotel, roomRates }));
+    },
+    {
+      initialData: [],
+    }
+  );
   const [filter, setFilter] = useState<Filter>();
 
   const onFilterChange = useCallback(
@@ -23,13 +45,18 @@ export const HotelsView = () => {
     <Stack flexDirection="column" gap={24}>
       <FilterBar onChange={onFilterChange} />
       {filter && (
-        <Stack flexDirection="column" alignItems="center" gap={24}>
+        <Stack flexDirection="column" alignItems="center" gap={48}>
           {hotelsQuery.data
             .filter((value) => {
               return Number(value.starRating) >= filter.stars;
             })
             .map((hotel) => (
-              <HotelCard key={hotel.id} hotel={hotel} />
+              <HotelCard
+                key={hotel.id}
+                hotel={hotel}
+                desiredAdults={filter.desiredAdults}
+                desiredChildren={filter.desiredChildren}
+              />
             ))}
         </Stack>
       )}

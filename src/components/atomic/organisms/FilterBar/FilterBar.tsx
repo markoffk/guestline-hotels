@@ -2,24 +2,24 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack } from '../Layout/Stack';
 
-export type Filter = { adults: number; kids: number; stars: number };
+export type Filter = { desiredAdults: number; desiredChildren: number; stars: number };
 type Props = {
   onChange: (filter: Filter) => void;
 };
 
 export const FilterBar: React.FC<Props> = ({ onChange }) => {
   const [stars, setStars] = useState(3);
-  const [adults, setAdults] = useState(1);
-  const [kids, setKids] = useState(0);
+  const [desiredAdults, setDesiredAdults] = useState(1);
+  const [desiredChildren, setDesiredChildren] = useState(0);
   const possibleStars = [1, 2, 3, 4, 5];
 
   useEffect(() => {
     onChange({
-      adults,
-      kids,
+      desiredAdults,
+      desiredChildren,
       stars,
     });
-  }, [adults, kids, stars, onChange]);
+  }, [desiredAdults, desiredChildren, stars, onChange]);
 
   return (
     <Root>
@@ -33,17 +33,17 @@ export const FilterBar: React.FC<Props> = ({ onChange }) => {
         </div>
         <div>
           adults:{' '}
-          <button disabled={adults <= 1} onClick={(_) => setAdults(adults - 1)}>
+          <button disabled={desiredAdults <= 1} onClick={(_) => setDesiredAdults(desiredAdults - 1)}>
             -
           </button>{' '}
-          {adults} <button onClick={(_) => setAdults(adults + 1)}>+</button>
+          {desiredAdults} <button onClick={(_) => setDesiredAdults(desiredAdults + 1)}>+</button>
         </div>
         <div>
           children:{' '}
-          <button disabled={kids <= 0} onClick={(_) => setKids(kids - 1)}>
+          <button disabled={desiredChildren <= 0} onClick={(_) => setDesiredChildren(desiredChildren - 1)}>
             -
           </button>{' '}
-          {kids} <button onClick={(_) => setKids(kids + 1)}>+</button>
+          {desiredChildren} <button onClick={(_) => setDesiredChildren(desiredChildren + 1)}>+</button>
         </div>
       </Stack>
     </Root>

@@ -1,16 +1,25 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Stack } from '../Layout/Stack';
-import { Hotel } from '../../../../lib/guestline/types/api';
+import { Hotel, HotelRoomRates } from '../../../../lib/guestline/types/api';
 
 type Props = {
-  hotel: Hotel;
+  hotel: Hotel & { roomRates: HotelRoomRates };
+  desiredAdults: number;
+  desiredChildren: number;
 };
 
-export const HotelCard: React.FC<Props> = ({ hotel }) => {
+export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildren }) => {
+  const filteredRooms = hotel.roomRates.rooms.filter((value) => {
+    return (
+      value.occupancy.maxAdults >= desiredAdults &&
+      value.occupancy.maxChildren >= desiredChildren &&
+      value.occupancy.maxOverall >= desiredAdults + desiredChildren
+    );
+  });
   return (
     <Root>
-      <Stack flexDirection="column">
+      <Stack flexDirection="column" gap={24}>
         <Stack gap={8}>
           <div>image</div>
           <Stack flexDirection="column" gap={8} flex={1}>
@@ -20,6 +29,21 @@ export const HotelCard: React.FC<Props> = ({ hotel }) => {
           </Stack>
           <div>{hotel.starRating}</div>
         </Stack>
+        {!!filteredRooms.length &&
+          filteredRooms.map((room) => (
+            <Stack key={room.id} gap={24}>
+              <div style={{ width: 100 }}>
+                {room.name}
+                <br />
+                Adults: {room.occupancy.maxAdults}
+                <br />
+                Children: {room.occupancy.maxChildren}
+                <br />
+              </div>
+              <div style={{ flex: 1 }}>{room.longDescription}</div>
+            </Stack>
+          ))}
+        {!filteredRooms.length && <b>no rooms matching your criteria</b>}
       </Stack>
     </Root>
   );
