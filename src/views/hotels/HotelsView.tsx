@@ -47,9 +47,7 @@ export const HotelsView = () => {
       {filter && (
         <Stack flexDirection="column" alignItems="center" gap={48}>
           {hotelsQuery.data
-            .filter((value) => {
-              return Number(value.starRating) >= filter.stars;
-            })
+            .filter((value) => Number(value.starRating) >= filter.stars)
             .map((hotel) => (
               <HotelCard
                 key={hotel.id}

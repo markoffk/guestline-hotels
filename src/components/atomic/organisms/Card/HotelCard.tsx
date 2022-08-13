@@ -21,7 +21,7 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
   const [imageIndex, setImageIndex] = useState(0);
 
   return (
-    <Root>
+    <Root data-hotel-star-rating={hotel.starRating}>
       <Stack flexDirection="column" gap={24}>
         <Stack gap={8}>
           <Stack>
@@ -29,7 +29,9 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
               &lt;
             </button>
             {hotel.images[imageIndex] && <HotelImage src={hotel.images[imageIndex].url} alt={`Image ${imageIndex}`} />}
-            <button disabled={imageIndex >= hotel.images.length - 1} onClick={(_) => setImageIndex(imageIndex + 1)}>&gt;</button>
+            <button disabled={imageIndex >= hotel.images.length - 1} onClick={(_) => setImageIndex(imageIndex + 1)}>
+              &gt;
+            </button>
           </Stack>
           <Stack flexDirection="column" gap={8} flex={1}>
             <span>{hotel.name}</span>
@@ -41,7 +43,11 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
         {!!filteredRooms.length &&
           filteredRooms.map((room) => (
             <Stack key={room.id} gap={24}>
-              <div style={{ width: 100 }}>
+              <div
+                style={{ width: 100 }}
+                data-room-max-adults={room.occupancy.maxAdults}
+                data-room-max-children={room.occupancy.maxChildren}
+              >
                 {room.name}
                 <br />
                 Adults: {room.occupancy.maxAdults}

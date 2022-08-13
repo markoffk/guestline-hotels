@@ -26,24 +26,38 @@ export const FilterBar: React.FC<Props> = ({ onChange }) => {
       <Stack gap={24} justifyContent="center">
         <div>
           {possibleStars.map((star) => (
-            <button disabled={stars === star} key={star} onClick={(_) => setStars(star)}>
+            <button disabled={stars === star} key={star} onClick={(_) => setStars(star)} data-filter-star={star}>
               {star}
             </button>
           ))}
         </div>
         <div>
           adults:{' '}
-          <button disabled={desiredAdults <= 1} onClick={(_) => setDesiredAdults(desiredAdults - 1)}>
+          <button
+            disabled={desiredAdults <= 1}
+            onClick={(_) => setDesiredAdults(desiredAdults - 1)}
+            data-filter-adults="decrease"
+          >
             -
           </button>{' '}
-          {desiredAdults} <button onClick={(_) => setDesiredAdults(desiredAdults + 1)}>+</button>
+          <span data-filter-adults-current={desiredAdults}>{desiredAdults}</span>{' '}
+          <button onClick={(_) => setDesiredAdults(desiredAdults + 1)} data-filter-adults="increase">
+            +
+          </button>
         </div>
         <div>
           children:{' '}
-          <button disabled={desiredChildren <= 0} onClick={(_) => setDesiredChildren(desiredChildren - 1)}>
+          <button
+            disabled={desiredChildren <= 0}
+            onClick={(_) => setDesiredChildren(desiredChildren - 1)}
+            data-filter-children="decrease"
+          >
             -
           </button>{' '}
-          {desiredChildren} <button onClick={(_) => setDesiredChildren(desiredChildren + 1)}>+</button>
+          <span data-filter-children-current={desiredChildren}>{desiredChildren}</span>{' '}
+          <button onClick={(_) => setDesiredChildren(desiredChildren + 1)} data-filter-children="increase">
+            +
+          </button>
         </div>
       </Stack>
     </Root>
