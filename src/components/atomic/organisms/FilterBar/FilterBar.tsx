@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Stack } from '../Layout/Stack';
 
 export type Filter = { desiredAdults: number; desiredChildren: number; stars: number };
+
 type Props = {
   onChange: (filter: Filter) => void;
 };
@@ -24,14 +25,15 @@ export const FilterBar: React.FC<Props> = ({ onChange }) => {
   return (
     <Root>
       <Stack gap={24} justifyContent="center">
-        <div>
+        <Stack gap={8} alignItems="center">
+          <span>stars:</span>
           {possibleStars.map((star) => (
             <button disabled={stars === star} key={star} onClick={(_) => setStars(star)} data-filter-star={star}>
               {star}
             </button>
           ))}
-        </div>
-        <div>
+        </Stack>
+        <Stack gap={8} alignItems="center">
           adults:{' '}
           <button
             disabled={desiredAdults <= 1}
@@ -44,8 +46,8 @@ export const FilterBar: React.FC<Props> = ({ onChange }) => {
           <button onClick={(_) => setDesiredAdults(desiredAdults + 1)} data-filter-adults="increase">
             +
           </button>
-        </div>
-        <div>
+        </Stack>
+        <Stack gap={8} alignItems="center">
           children:{' '}
           <button
             disabled={desiredChildren <= 0}
@@ -58,7 +60,7 @@ export const FilterBar: React.FC<Props> = ({ onChange }) => {
           <button onClick={(_) => setDesiredChildren(desiredChildren + 1)} data-filter-children="increase">
             +
           </button>
-        </div>
+        </Stack>
       </Stack>
     </Root>
   );
@@ -66,5 +68,6 @@ export const FilterBar: React.FC<Props> = ({ onChange }) => {
 
 const Root = styled.div`
   border: 1px dashed black;
+  background-color: blanchedalmond;
   padding: 8px;
 `;

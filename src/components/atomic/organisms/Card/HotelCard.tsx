@@ -28,7 +28,11 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
             <button disabled={imageIndex <= 0} onClick={(_) => setImageIndex(imageIndex - 1)}>
               &lt;
             </button>
-            {hotel.images[imageIndex] && <HotelImage src={hotel.images[imageIndex].url} alt={`Image ${imageIndex}`} />}
+            <HotelImageWrapper>
+              {hotel.images[imageIndex] && (
+                <HotelImage src={hotel.images[imageIndex].url} alt={`Image ${imageIndex}`} />
+              )}
+            </HotelImageWrapper>
             <button disabled={imageIndex >= hotel.images.length - 1} onClick={(_) => setImageIndex(imageIndex + 1)}>
               &gt;
             </button>
@@ -38,7 +42,7 @@ export const HotelCard: React.FC<Props> = ({ hotel, desiredAdults, desiredChildr
             <span>{hotel.address1}</span>
             <span>{hotel.address2}</span>
           </Stack>
-          <div>{hotel.starRating}</div>
+          <div>&#9733; {hotel.starRating}</div>
         </Stack>
         {!!filteredRooms.length &&
           filteredRooms.map((room) => (
@@ -71,6 +75,13 @@ const Root = styled.div`
   padding: 24px;
 `;
 
+const HotelImageWrapper = styled.div`
+  width: 180px;
+  height: 100px;
+  text-align: center;
+`;
+
 const HotelImage = styled.img`
-  max-width: 100px;
+  width: auto;
+  max-height: 100px;
 `;
